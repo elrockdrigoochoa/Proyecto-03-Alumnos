@@ -1,17 +1,88 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
 }
 
 #formulario-alta {
     margin-bottom: 20px;
 }
 
-input, button {
+input[type="text"],
+input[type="number"],
+button {
     margin-bottom: 10px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
 
 #contenedor {
     border-top: 1px solid #ccc;
     margin-top: 20px;
     padding-top: 20px;
+}
+
+#contenedor h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#contenedor ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#contenedor ul li {
+    margin-bottom: 10px;
+}
+
+#detalle-alumno {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+#detalle-alumno h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+#detalle-alumno label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#detalle-alumno input[type="text"],
+#detalle-alumno input[type="number"] {
+    width: 200px;
+    padding: 6px;
+}
+
+#detalle-alumno button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#detalle-alumno button:hover {
+    background-color: #218838;
 }

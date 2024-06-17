@@ -17,8 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("edad").value = "";
 
         // Mostrar mensaje de éxito
-        const contenedor = document.getElementById("contenedor");
-        contenedor.innerHTML = `<p>Alumno ${nombre} ${apellidos} agregado exitosamente.</p>`;
+        mostrarAltaAlumnos();
     });
 });
 
@@ -27,28 +26,31 @@ class Alumno {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.edad = edad;
-        this.materiasInscritas = [];
-        this.calificaciones = [];
+        this.materiasCalificaciones = {}; // Objeto para almacenar materias y calificaciones
     }
 
     inscribirMateria(materia) {
-        this.materiasInscritas.push(materia);
+        if (!this.materiasCalificaciones[materia]) {
+            this.materiasCalificaciones[materia] = null; // Inicialmente la calificación es null
+        } else {
+            console.log(`El alumno ${this.nombre} ya está inscrito en la materia ${materia}.`);
+        }
     }
 
     asignarCalificacion(materia, calificacion) {
-        const index = this.materiasInscritas.indexOf(materia);
-        if (index !== -1) {
-            this.calificaciones[index] = calificacion;
+        if (this.materiasCalificaciones[materia] !== undefined) {
+            this.materiasCalificaciones[materia] = calificacion;
         } else {
-            console.log("El alumno no está inscrito en esa materia.");
+            console.log(`El alumno ${this.nombre} no está inscrito en la materia ${materia}.`);
         }
     }
 
     obtenerPromedio() {
-        if (this.calificaciones.length === 0) return 0;
+        const calificaciones = Object.values(this.materiasCalificaciones).filter(calificacion => calificacion !== null);
+        if (calificaciones.length === 0) return 0;
 
-        const sum = this.calificaciones.reduce((acc, curr) => acc + curr, 0);
-        return sum / this.calificaciones.length;
+        const sum = calificaciones.reduce((acc, curr) => acc + curr, 0);
+        return sum / calificaciones.length;
     }
 }
 
@@ -127,3 +129,93 @@ function ordenarAlumnosPorCalificacionDescendente() {
         return promedioB - promedioA;
     });
 }
+
+// Función para mostrar alta de alumnos
+function mostrarAltaAlumnos() {
+    const contenedor = document.getElementById("contenedor");
+    contenedor.innerHTML = ""; // Limpiar el contenedor
+
+    contenedor.innerHTML += `
+        <h2>Alta de Alumnos</h2>
+        <p>Alumno agregado exitosamente.</p>
+    `;
+}
+
+// Función para mostrar consulta de alumnos
+function mostrarConsultaAlumnos() {
+    const contenedor = document.getElementById("contenedor");
+    contenedor.innerHTML = ""; // Limpiar el contenedor
+
+    contenedor.innerHTML += `
+        <h2>Consulta de Alumnos</h2>
+        <div id="detalle-alumno">
+            <!-- Aquí se mostrarán los detalles de los alumnos -->
+        </div>
+        <br>
+        <h3>Agregar Materia y Calificación</h3>
+        <label for="materia">Materia:</label>
+        <input type="text" id="materia">
+        <label for="calificacion">Calificación:</label>
+        <input type="number" id="calificacion">
+        <button onclick="agregarMateriaCalificacion()">Agregar</button>
+    `;
+
+    contenedor.innerHTML += `
+        <ul>
+            ${alumnos.map(alumno => `
+                <li>
+                    <strong>${alumno.nombre} ${alumno.apellidos}</strong> - Edad: ${alumno.edad}
+                    <ul>
+                        ${Object.entries(alumno.materiasCalificaciones).map(([materia, calificacion]) => `
+                            <li>${materia}: ${calificacion !== null ? calificacion : 'Sin calificación'}</li>
+                        `).join('')}
+                    </ul>
+                </li>
+            `).join('')}
+        </ul>
+    `;
+}
+
+// Función para agregar materia y calificación al alumno actualmente consultado
+function agregarMateriaCalificacion() {
+    const nombre = document.getElementById("nombre").value;
+    const apellidos = document.getElementById("apellidos").value;
+    const materia = document.getElementById("materia").value;
+    const calificacion = parseFloat(document.getElementById("calificacion").value);
+
+    // Buscar al alumno por nombre y apellidos
+    const alumno = alumnos.find(a => a.nombre === nombre && a.apellidos === apellidos);
+    if (alumno) {
+        alumno.inscribirMateria(materia);
+        alumno.asignarCalificacion(materia, calificacion);
+        
+        // Mostrar mensaje de éxito
+        const detalleAlumno = document.getElementById("detalle-alumno");
+        detalleAlumno.innerHTML = `<p>Materia ${materia} agregada con calificación ${calificacion} para ${nombre} ${apellidos}.</p>`;
+    } else {
+        console.log("Alumno no encontrado.");
+    }
+}
+
+// Función para mostrar listado de alumnos
+function mostrarListadoAlumnos() {
+    const contenedor = document.getElementById("contenedor");
+    contenedor.innerHTML = ""; // Limpiar el contenedor
+
+    contenedor.innerHTML += `
+        <h2>Listado de Alumnos</h2>
+        <ul>
+            ${alumnos.map(alumno => `
+                <li>
+                    <strong>${alumno.nombre} ${alumno.apellidos}</strong> - Edad: ${alumno.edad}
+                    <ul>
+                        ${Object.entries(alumno.materiasCalificaciones).map(([materia, calificacion]) => `
+                            <li>${materia}: ${calificacion !== null ? calificacion : 'Sin calificación'}</li>
+                        `).join('')}
+                    </ul>
+                </li>
+            `).join('')}
+        </ul>
+    `;
+}
+

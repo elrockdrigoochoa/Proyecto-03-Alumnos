@@ -23,9 +23,52 @@
         </form>
     </div>
 
+    <div id="botones">
+        <button onclick="mostrarAltaAlumnos()">Alta de alumnos</button>
+        <button onclick="mostrarConsultaAlumnos()">Consulta de alumnos</button>
+        <button onclick="mostrarListadoAlumnos()">Listado de alumnos</button>
+    </div>
+
     <div id="contenedor">
         <!-- Aquí se mostrarán los resultados de las funciones -->
     </div>
+
+    <script>
+        // Función para mostrar alta de alumnos
+        function mostrarAltaAlumnos() {
+            const contenedor = document.getElementById("contenedor");
+            contenedor.innerHTML = ""; // Limpiar el contenedor
+
+            contenedor.innerHTML += `
+                <h2>Alta de Alumnos</h2>
+                <p>Utiliza el formulario para agregar nuevos alumnos.</p>
+            `;
+        }
+
+        // Función para mostrar consulta de alumnos
+        function mostrarConsultaAlumnos() {
+            const contenedor = document.getElementById("contenedor");
+            contenedor.innerHTML = ""; // Limpiar el contenedor
+
+            contenedor.innerHTML += `
+                <h2>Consulta de Alumnos</h2>
+                <!-- Aquí puedes implementar el código para consultar detalles de alumnos -->
+            `;
+        }
+
+        // Función para mostrar listado de alumnos
+        function mostrarListadoAlumnos() {
+            const contenedor = document.getElementById("contenedor");
+            contenedor.innerHTML = ""; // Limpiar el contenedor
+
+            contenedor.innerHTML += `
+                <h2>Listado de Alumnos</h2>
+                <ul>
+                    ${alumnos.map(alumno => `<li>${alumno.nombre} ${alumno.apellidos}</li>`).join('')}
+                </ul>
+            `;
+        }
+    </script>
 </body>
 </html>
 
